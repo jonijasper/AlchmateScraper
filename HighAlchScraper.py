@@ -3,6 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 import time
 
+from helpers import stdmsg
+
 # Setup ChromeDriver (replace with path to your chromedriver if needed)
 driver = webdriver.Chrome()
 
@@ -19,7 +21,7 @@ try:
         members_checkbox.click()
         time.sleep(2)  # wait for table to update
 except Exception as e:
-    print("Checkbox error:", e)
+    stdmsg(e, level="ERROR")
 
 # Grab the table
 rows = driver.find_elements(By.CSS_SELECTOR, "table tr")[1:]  # skip header
@@ -35,6 +37,6 @@ for row in rows:
 
     tradelimit = cols[5].text or "TYHJÄ"
 
-    print(f"{item}: High Alch {high_alch} | Profit {profit} | Tradelimit {tradelimit}")
+    stdmsg(f"{item}: High Alch {high_alch} | Profit {profit} | Tradelimit {tradelimit}")
 
 driver.quit()
