@@ -15,16 +15,17 @@ driver.get("https://alchmate.com/osrs_high_alch")
 time.sleep(3)
 
 # Uncheck "Include Members" if checked
-try:
-    members_checkbox = driver.find_element(By.ID, "includeMembers")
-    if members_checkbox.is_selected():
-        members_checkbox.click()
-        time.sleep(2)  # wait for table to update
-except Exception as e:
-    stdmsg(e, level="ERROR")
+# try:
+members_checkbox = driver.find_element(By.ID, "includeMembers")
+if members_checkbox.is_selected():
+    members_checkbox.click()
+    time.sleep(2)  # wait for table to update
+# except SomeSpesificError as e:
+#     stdmsg(e, level="ERROR")
 
 # Grab the table
 rows = driver.find_elements(By.CSS_SELECTOR, "table tr")[1:]  # skip header
+
 
 # Parse and print
 for row in rows:
@@ -34,8 +35,10 @@ for row in rows:
     high_alch = cols[1].text
     profit = cols[3].text
     
-
-    tradelimit = cols[5].text or "TYHJÄ"
+    try:
+        tradelimit = cols[5].text
+    except IndexError:
+        tradelimit = "N/A"
 
     stdmsg(f"{item}: High Alch {high_alch} | Profit {profit} | Tradelimit {tradelimit}")
 
